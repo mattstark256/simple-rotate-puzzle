@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public struct ClickInput
@@ -20,6 +21,9 @@ public struct ClickInput
 [RequireComponent(typeof(MouseRaycast), typeof(GameController))]
 public class PlayerInput : MonoBehaviour
 {
+    [SerializeField]
+    private Text tutorialText;
+
     private MouseRaycast mouseRaycast;
     private GameController gameController;
 
@@ -44,10 +48,12 @@ public class PlayerInput : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
                     inputBuffer.Add(new ClickInput(tile, -1));
+                    tutorialText.enabled = false;
                 }
                 else if (Input.GetKeyDown(KeyCode.Mouse1))
                 {
                     inputBuffer.Add(new ClickInput(tile, 1));
+                    tutorialText.enabled = false;
                 }
             }
         }
