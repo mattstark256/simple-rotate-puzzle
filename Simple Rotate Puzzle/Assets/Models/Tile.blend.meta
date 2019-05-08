@@ -10,6 +10,7 @@ ModelImporter:
     100008: Group_Symbol
     100010: Error
     100012: Error_001
+    100014: Tile_Square
     400000: //RootNode
     400002: Tile
     400004: Tile_Gear
@@ -17,6 +18,7 @@ ModelImporter:
     400008: Group_Symbol
     400010: Error
     400012: Error_001
+    400014: Tile_Square
     2100000: Material_001
     2100002: Material_002
     2100004: Material_003
@@ -29,6 +31,7 @@ ModelImporter:
     2300008: Group_Symbol
     2300010: Error
     2300012: Error_001
+    2300014: Tile_Square
     3300000: //RootNode
     3300002: Tile
     3300004: Tile_Gear
@@ -36,6 +39,7 @@ ModelImporter:
     3300008: Group_Symbol
     3300010: Error
     3300012: Error_001
+    3300014: Tile_Square
     4300000: Cylinder
     4300002: Tile_Gear
     4300004: Tile
@@ -43,6 +47,7 @@ ModelImporter:
     4300008: Group_Symbol
     4300010: Error
     4300012: Error_001
+    4300014: Tile_Square
     7400000: Default Take
     9500000: //RootNode
   externalObjects: {}

@@ -57,10 +57,15 @@ public class Tile : MonoBehaviour
     protected virtual void AssignMaterialColors()
     {
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-        for (int i = 0; i < 4; i++)
-        {
-            meshRenderer.materials[i].color = segments[i] ? Color.black : Color.white;
-        }
+        meshRenderer.material.SetColor("_Color1", (segments[0]) ? Color.black : Color.white);
+        meshRenderer.material.SetColor("_Color2", (segments[1]) ? Color.black : Color.white);
+        meshRenderer.material.SetColor("_Color3", (segments[2]) ? Color.black : Color.white);
+        meshRenderer.material.SetColor("_Color4", (segments[3]) ? Color.black : Color.white);
+
+        //for (int i = 0; i < 4; i++)
+        //{
+        //    meshRenderer.materials[i].color = segments[i] ? Color.black : Color.white;
+        //}
     }
 
 
@@ -86,21 +91,23 @@ public class Tile : MonoBehaviour
             ShiftSegmentsCCW();
         }
 
-        StartCoroutine(RotateCoroutine(-90 * amount));
+        StartCoroutine(RotateCoroutine(90 * amount));
     }
 
 
     private IEnumerator RotateCoroutine(float angle)
     {
         isRotating = true;
-        Quaternion startRotation = transform.localRotation;
+        //Quaternion startRotation = transform.localRotation;
+        float initialAngle = GetComponent<MeshRenderer>().material.GetFloat("_RotateAngle");
         float f = 0;
         while (f < 1)
         {
             f += Time.deltaTime / rotateDuration;
             if (f > 1) f = 1;
 
-            transform.localRotation = startRotation * Quaternion.Euler(0, 0, Mathf.SmoothStep(0, angle, f));
+            GetComponent<MeshRenderer>().material.SetFloat("_RotateAngle", initialAngle + Mathf.SmoothStep(0, angle, f));
+            //transform.localRotation = startRotation * Quaternion.Euler(0, 0, Mathf.SmoothStep(0, angle, f));
 
             yield return null;
         }

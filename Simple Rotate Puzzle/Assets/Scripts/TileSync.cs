@@ -11,19 +11,13 @@ public class TileSync : Tile
 
     private Color[] groupColors = {
         new Color(1f, 0.5f, 0),
-        new Color(0.2f, 0.3f, 1),
-        new Color(0, 0.9f, 0.1f) };
+        new Color(0.25f, 0.4f, 1),
+        new Color(0, 0.85f, 0.1f) };
     public Color GetGroupColor()
     {
         if (syncGroup < groupColors.Length) return groupColors[syncGroup];
         else return Color.grey;
     }
-
-    [SerializeField]
-    private MeshRenderer symbolRenderer;
-    public MeshRenderer GetSymbolRenderer() { return symbolRenderer; }
-    public void SetSymbolRenderer(MeshRenderer _symbolRenderer) { symbolRenderer = _symbolRenderer; }
-
 
 
     public override void Rotate(int amount)
@@ -37,8 +31,8 @@ public class TileSync : Tile
     protected override void AssignMaterialColors()
     {
         base.AssignMaterialColors();
-
-        symbolRenderer.material.color = GetGroupColor();
+        
+        GetComponent<MeshRenderer>().material.SetColor("_SymbolColor", GetGroupColor());
     }
 
 

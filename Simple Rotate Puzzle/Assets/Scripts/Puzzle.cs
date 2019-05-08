@@ -50,7 +50,7 @@ public class Puzzle : MonoBehaviour
                     tile.GetSegment(0) != tile.GetNeighbor(0).GetSegment(2))
                 {
                     solved = false;
-                    CreateErrorObject(tile, tile.GetNeighbor(0));
+                    //CreateErrorObject(tile, tile.GetNeighbor(0));
                 }
 
                 if (tile.GetNeighbor(1) != null &&
@@ -58,7 +58,7 @@ public class Puzzle : MonoBehaviour
                     tile.GetSegment(1) != tile.GetNeighbor(1).GetSegment(3))
                 {
                     solved = false;
-                    CreateErrorObject(tile, tile.GetNeighbor(1));
+                    //CreateErrorObject(tile, tile.GetNeighbor(1));
                 }
             }
         }

@@ -3,11 +3,15 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+
 		_RotateAngle("Rotate Angle", Float) = 60
 		_Color1("Color 1", Color) = (1,1,1,1)
 		_Color2("Color 2", Color) = (1,1,1,1)
 		_Color3("Color 3", Color) = (1,1,1,1)
 		_Color4("Color 4", Color) = (1,1,1,1)
+
+		_SymbolTex("Symbol Texture", 2D) = "white" {}
+		_SymbolColor("Symbol Color", Color) = (1,1,1,1)
     }
     SubShader
     {
@@ -43,11 +47,15 @@
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+
 			float _RotateAngle;
 			fixed4 _Color1;
 			fixed4 _Color2;
 			fixed4 _Color3;
 			fixed4 _Color4;
+
+			sampler2D _SymbolTex;
+			fixed4 _SymbolColor;
 
             v2f vert (appdata v)
             {
@@ -77,6 +85,8 @@
                 UNITY_APPLY_FOG(i.fogCoord, col);
 
 				fixed4 col2 = (i.uv2.x > 0.5) ? (i.uv2.y > 0.5) ? _Color1 : _Color2 : (i.uv2.y > 0.5) ? _Color4 : _Color3;
+				
+				col2 = lerp(_SymbolColor, col2, tex2D(_SymbolTex, i.uv2).r);
 
                 return fixed4(col2.rgb, col.a);
             }
