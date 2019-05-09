@@ -15,8 +15,7 @@ public class Puzzle : MonoBehaviour
     public Vector3 GetAveragePosition() { return averagePosition; }
 
     [SerializeField]
-    private GameObject mismatchErrorPrefab;
-    private List<GameObject> mismatchErrors = new List<GameObject>();
+    private MismatchWarning warningPrefab;
 
 
     private void Awake()
@@ -24,42 +23,54 @@ public class Puzzle : MonoBehaviour
         tiles = GetComponentsInChildren<Tile>();
         CalculateAveragePosition();
         SetUpNeighbors();
-        CheckIfSolved();
+        UpdateWarnings();
     }
 
 
     public void CheckIfSolved()
     {
-        while (mismatchErrors.Count > 0)
-        {
-            Destroy(mismatchErrors[0].gameObject);
-            mismatchErrors.RemoveAt(0);
-        }
-
-        solved = true;
         foreach (Tile tile in tiles)
         {
             if (tile.IsRotating())
             {
                 solved = false;
+                return;
             }
-            else
-            {
-                if (tile.GetNeighbor(0) != null &&
-                    !tile.GetNeighbor(0).IsRotating() &&
-                    tile.GetSegment(0) != tile.GetNeighbor(0).GetSegment(2))
-                {
-                    solved = false;
-                    //CreateErrorObject(tile, tile.GetNeighbor(0));
-                }
+        }
 
-                if (tile.GetNeighbor(1) != null &&
-                    !tile.GetNeighbor(1).IsRotating() &&
-                    tile.GetSegment(1) != tile.GetNeighbor(1).GetSegment(3))
-                {
-                    solved = false;
-                    //CreateErrorObject(tile, tile.GetNeighbor(1));
-                }
+        foreach (Tile tile in tiles)
+        {
+            if (tile.GetNeighbor(0) != null &&
+                tile.GetSegment(0) != tile.GetNeighbor(0).GetSegment(2))
+            {
+                solved = false;
+                return;
+            }
+
+            if (tile.GetNeighbor(1) != null &&
+                tile.GetSegment(1) != tile.GetNeighbor(1).GetSegment(3))
+            {
+                solved = false;
+                return;
+            }
+        }
+
+        solved = true;
+    }
+
+
+    public void UpdateWarnings()
+    {
+        foreach (Tile tile in tiles)
+        {
+            if (tile.GetNeighbor(0) != null)
+            {
+                tile.GetWarning(0).SetWarningEnabled(tile.GetSegment(0) != tile.GetNeighbor(0).GetSegment(2));
+            }
+
+            if (tile.GetNeighbor(1) != null)
+            {
+                tile.GetWarning(1).SetWarningEnabled(tile.GetSegment(1) != tile.GetNeighbor(1).GetSegment(3));
             }
         }
     }
@@ -85,21 +96,27 @@ public class Puzzle : MonoBehaviour
 
     private void SetUpNeighbors()
     {
-        Vector3 neighbor1Vector = new Vector3(1, 1, 0);
-        Vector3 neighbor2Vector = new Vector3(1, -1, 0);
+        //Vector3 neighbor1Vector = new Vector3(1, 1, 0);
+        //Vector3 neighbor2Vector = new Vector3(1, -1, 0);
         foreach (Tile tile1 in tiles)
         {
             foreach (Tile tile2 in tiles)
             {
-                if (tile2.transform.localPosition == tile1.transform.localPosition + neighbor1Vector)
+                if (tile2.transform.localPosition == tile1.transform.localPosition + Vector3.right)
                 {
                     tile1.SetNeighbor(0, tile2);
                     tile2.SetNeighbor(2, tile1);
+                    MismatchWarning warning = CreateWarning(tile1, tile2);
+                    tile1.SetWarning(0, warning);
+                    tile2.SetWarning(2, warning);
                 }
-                else if (tile2.transform.localPosition == tile1.transform.localPosition + neighbor2Vector)
+                else if (tile2.transform.localPosition == tile1.transform.localPosition + Vector3.down)
                 {
                     tile1.SetNeighbor(1, tile2);
                     tile2.SetNeighbor(3, tile1);
+                    MismatchWarning warning = CreateWarning(tile1, tile2);
+                    tile1.SetWarning(1, warning);
+                    tile2.SetWarning(3, warning);
                 }
             }
         }
@@ -117,11 +134,11 @@ public class Puzzle : MonoBehaviour
     }
 
 
-    private void CreateErrorObject(Tile tile1, Tile tile2)
+    private MismatchWarning CreateWarning(Tile tile1, Tile tile2)
     {
-        GameObject newErrorObject = Instantiate(mismatchErrorPrefab);
-        newErrorObject.transform.parent = transform;
-        newErrorObject.transform.localPosition = (tile1.transform.localPosition + tile2.transform.localPosition) / 2;
-        mismatchErrors.Add(newErrorObject);
+        MismatchWarning warning = Instantiate(warningPrefab);
+        warning.transform.parent = transform;
+        warning.transform.localPosition = (tile1.transform.localPosition + tile2.transform.localPosition) / 2;
+        return warning;
     }
 }

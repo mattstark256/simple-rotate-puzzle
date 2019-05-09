@@ -32,7 +32,7 @@ public class TileSync : Tile
     {
         base.AssignMaterialColors();
         
-        GetComponent<MeshRenderer>().material.SetColor("_SymbolColor", GetGroupColor());
+        GetComponent<SpriteRenderer>().material.SetColor("_SymbolColor", GetGroupColor());
     }
 
 
@@ -41,6 +41,6 @@ public class TileSync : Tile
         base.OnDrawGizmos();
 
         Gizmos.color = GetGroupColor();
-        Gizmos.DrawCube(transform.position, Vector3.one * 0.6f);
+        Gizmos.DrawCube(transform.position, Vector3.one * 0.4f);
     }
 }

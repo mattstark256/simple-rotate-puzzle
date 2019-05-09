@@ -10,6 +10,8 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private int currentPuzzleIndex = 0;
     [SerializeField]
+    private Text tutorialText;
+    [SerializeField]
     private Text continueText;
     [SerializeField]
     private string winSceneName;
@@ -32,6 +34,7 @@ public class GameController : MonoBehaviour
     {
         if (!awaitingContinue && puzzleSequence[currentPuzzleIndex].Solved())
         {
+            tutorialText.enabled = false;
             awaitingContinue = true;
             continueText.enabled = true;
         }

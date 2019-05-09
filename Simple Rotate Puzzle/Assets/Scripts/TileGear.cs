@@ -59,6 +59,6 @@ public class TileGear : Tile
         base.OnDrawGizmos();
 
         Gizmos.color = Color.grey;
-        Gizmos.DrawCube(transform.position, Vector3.one * 0.6f);
+        Gizmos.DrawCube(transform.position, Vector3.one * 0.4f);
     }
 }
